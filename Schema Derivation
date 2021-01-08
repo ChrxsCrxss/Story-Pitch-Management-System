@@ -1,0 +1,141 @@
+The system is designed to support authors and editors.
+Their use cases different; however, both authors and
+editors are users (persons, to avoid name collision 
+in postgres). So we combine authors and editors in a
+single person table. So the schema will contain: 
+	
+	1) person relation 
+	
+	* This turns out the be a tricky compromise. On
+	on hand, we reduce the number of relations. On the
+	other, person objects that implement editors have
+	an unused points field, and person objects that 
+	implement authors have an unused genre set field.
+	 
+	
+Persons can be authors or editors. Editors can be 
+senior editors or assistant editors. or general 
+editors. Therefore, the schema will contain:
+
+	2) role relation
+		author
+		assistant editor
+		senior editor 
+
+Authors submit story pitches and editors review them, 
+so the schema will contain
+
+	3) pitch relation 
+
+ 	* Note: Each pitch must have a general editor. 
+
+Each pitch HAS A form and genre there are pulled from 
+a reference table. Therefore there is a fixed genre set 
+and a fixed form set. Therefore, the schema will contain:
+
+	4) form relation
+	5) genre relation
+	
+Each pitch may also have optional attachments. Therefore, 
+the schema will contain: 
+
+	6) attachment relation 
+	
+Editors can accept or reject a pitch. A rejection HAS A 
+explanation. In this implementation, an acceptance will 
+also have an explanation. Both a rejection and an
+acceptance are a type of decision on a pitch, so they can 
+be combined in one table. Therefore, the schema will 
+contain: 
+
+	7) decision relation 
+	
+For now, decisions can take two types: accepted or 
+rejected. Therefore, The schema will contain:
+
+	8) decision_type relation
+
+Pitches may also be delayed pending an informational 
+request initiated by an editor. Therefore, the schema 
+will contain:
+
+	9) external_request relation
+
+This relation relates an editor, a pitch, and an author. 
+
+A pitch HAS A status. The values are accepted, rejected,
+pending-editor-review, pending-author-review. A request
+also HAS A status. A request can be open or closed. 
+A pitch has a status of pending-editor-review if no it 
+has no open external requests associated with it. 
+A pitch has a status of pending-author-review if no it 
+has no open external requests associated with it. 
+Therefore, the relation will contain:
+
+	10) status relation 
+			accepted
+			rejected
+			pending-editor-review
+			pending-author-review
+			open
+			closed
+			
+	
+Pitches may also be designated high priority, implying also
+that pitches may be low priority. Therefore a pitch HAS A
+priority. By default, all pitches that make it past general 
+review will be designated medium priority. Therefore, the 
+schema will contain:
+
+	11) pitch_priority relation 
+			low priority
+			medium priority 
+			high priority 
+	
+General editors may also request more information from 
+assistant editors, and senior editors may also request more 
+information from general editors. These are instances of 
+internal requests. Like external requests, internal 
+requests have a status of open or closed. If there is an
+open internal request associated with a closed external 
+request, the pitch associated with the closed external 
+request will have a status of pending-editor-review. 
+Therefore, the schema will contain: 
+
+	12) internal_request relation 
+	
+After a pitch is approved, the author must submit a draft. 
+A draft is an object associated with a pitch. Therefore, the 
+schema will contain:
+
+	13) draft relation 
+	
+Since drafts and pitches are in one-to-one correspondence, 
+There is no need for a join table. 
+
+Since editors can be in multiple genres, there is a many-to-many 
+relationship between editors and genres. This implies the 
+need for a join table. Therefore, the schema will contain: 
+
+	14) editor_genre relation 
+
+Since we are creating a pipeline for story pitch submissions,
+we support a multi-stage process. Independent of a pitch's
+status is a pitch's current stage in the pipeline. So,
+in addition to a status, a pitch HAS A current stage. 
+Therefore, the schema will contain: 
+
+	15) current_stage
+			genre review 
+			general review
+			senior review
+			final review ( draft under review )
+
+
+Miscellany 
+Pitches, decisions, requests, and drafts should have a creation time. 
+Pitches and drafts should have a last-modified time. 
+
+
+You request information from an PERSON. So We can probably combine create
+a general request tpye.

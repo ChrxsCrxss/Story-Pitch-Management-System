@@ -1,0 +1,81 @@
+.card {
+  margin-bottom: 24px;
+}
+.card-comment-section {
+  min-height: auto;
+  max-height: 200px;
+  overflow: scroll;
+  border-style: outset;
+  background-color: wheat;
+  margin-bottom: 8px;
+}
+
+.card-decision-section{
+  min-height: auto;
+  max-height: 200px;
+  overflow: scroll;
+  border-style: outset;
+  background-color: wheat;
+  margin-bottom: 8px;
+}
+
+.decision-card:hover {
+  transform: scale(1.05);
+  background-color: whitesmoke;
+}
+
+.comment-card:hover {
+  transform: scale(1.05);
+  background-color: whitesmoke;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  background-color: whitesmoke;
+}
+
+.comment-card {
+  font-size: x-small;
+  margin: 16px;
+  background-color: white;
+}
+
+.decision-card {
+  font-size: x-small;
+  margin: 16px;
+  background-color: white;
+}
+
+
+
+#explanation-draft-area {
+  width: -webkit-fill-available;
+  resize: vertical;
+}
+
+hr {
+  height: 0px;
+  border: none;
+  border-top: 2px solid black;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.modal-content {
+  width: 150%; 
+}
+
+/* https://stackoverflow.com/questions/8304436/css-styling-text-areas-like-notebook-look */
+#draft-input-form {
+    background: url(http://i.stack.imgur.com/ynxjD.png) repeat-y;
+    font: normal 14px verdana;
+    line-height: 25px;
+    padding: 2px 10px;
+    border: solid 1px #ddd;
+    resize: none;
+}
+
+.row {
+  flex-wrap: nowrap;
+  overflow: scroll;
+}

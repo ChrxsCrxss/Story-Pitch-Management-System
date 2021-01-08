@@ -1,0 +1,55 @@
+The API needs to support story pitch management system services. The story pitch 
+management system streamlines the process for story story pitch submission, review,
+and approval
+
+ Authors should be able to: 
+	 submit stories
+	 see submitted stories 
+	 remove a submitted story (pre-approval)
+	 see all their stories
+	 see stories organized by pipeline stage 
+	 see requests from editors
+	 hand requests for information
+	 approve edits by senior editor
+	 reject edits by sensior editor 
+	 submit draft 
+	 
+Assistant Editors should be able to: 
+	 see submitted stories for their genre 
+	 reject a submitted story ( and give a reason for rejection )
+	 approve a submitted story
+	 request more information from author 
+
+General Editors should be able to: 
+	do everything assistant editors can do
+	request more information from approving assistant editor
+ 
+	
+	* The general editor role appears to be temporary, composition
+	  works best here. The general editor assigned to an approved pitch
+	  can be selected at random 
+
+Senior Editors should be able to: 
+	 do everything general editors can do
+	 request more information from approving general editor
+	 edit tentative title, tag line, and completion date of pitch
+
+
+What is the fundamental representation in this system ? Pitch. 
+What should a Pitch have ? 
+
+
+id
+title
+tag line
+completion date
+genre
+type ( novel, novella, short story, article )
+status ( rejected | approved | pending... assistant-editor review | general editor review | senior editor review | draft review ) 
+foreign reference to author 
+foreign reference to draft
+foreign reference to genre committee 
+
+
+
+ 
