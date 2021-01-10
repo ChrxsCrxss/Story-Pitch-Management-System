@@ -8,10 +8,10 @@ to you !
 
 ## Technologies Used
 
-Front-End: ES6, HTML, CSS, BOOTSTRAP
-Back-End:  Java, Javalin, Maven, Hibernate
-Database:  AWS PostgreSQL, DBeaver
-Testing:   JUnit, Mokito Postman
+* Front-End: ES6, HTML, CSS, BOOTSTRAP
+* Back-End:  Java, Javalin, Maven, Hibernate
+* Database:  AWS PostgreSQL, DBeaver
+* Testing:   JUnit, Mokito Postman
 
 ## Features
 
