@@ -1,21 +1,54 @@
+# Story Pitch Management System 
 
-### Architectural Change: 
+## Project Description
 
-Project0 and Project1 are fairly similar in that they are both basic CRUD applications. 
-Where Project1 differs is that it has a front-end, whereas Project0 was a CLI application. 
-This matters because controller logic and user role were closely associated in Project0. 
-After all, the controller had to expose an interface appropriate to the privileges of the 
-user. However, Project1 has a true front-end that exposes the appropriate interface.
-Because the controllers are no longer responsible for UI, we achieve separation of concerns, 
-and can therefore generalize the controller logic. The benefit of this is that we avoid
-an isomorphic mapping of controllers to user roles.
+Story Pitch Management System is an project design to invert the process of research in the humanities. Instead of aimlessly scouring 
+obscure archives in search of inspiration, just start with your ideas and let the scholarly conversation come 
+to you !
 
-### Technologies Used
+## Technologies Used
+
 Front-End: ES6, HTML, CSS, BOOTSTRAP
 Back-End:  Java, Javalin, Maven, Hibernate
 Database:  AWS PostgreSQL, DBeaver
-Testing:   JUnit, Postman
+Testing:   JUnit, Mokito Postman
 
+## Features
+
+List of features ready and TODOs for future development
+* Awesome feature 1
+* Awesome feature 2
+* Awesome feature 3
+
+To-do list:
+* Rewrite frontend with framework. 
+* Wow improvement to be done 2
+
+## Getting Started
+
+To get started, simply clone the project. 
+Open the client in vscode. Open the backend in Esclipse. 
+The client is written in vanilla JavaScript, so you can 
+use the client immediately by copy/pasting the path to 
+index.js into your broswer search bar. The backend api
+is build with the Javalin framework, and so runs directly
+on your local machine (via the JVM, of course). Simply 
+run the file that has the `main` method, application.java. 
+
+## Usage
+
+The application is straightforward. Just type your ideas into the draft space.
+When you are satisfied, hit  `Get Recommendations` and the application with take
+care of the rest. After a short delay (note, however, that longer drafts => longer delay), 
+you will recieve a set of recommended readings, each complete with a title, link, and 
+introductory blurb!
+
+## Contributors
+
+
+## License
+
+This project uses the following license: [<license_name>](<link>).
 
 ### Challenges and Solutions 
 
