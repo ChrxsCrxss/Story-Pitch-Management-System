@@ -46,7 +46,7 @@ introductory blurb!
 
 ## License
 
-This project uses the following license: [<license_name>](<link>).
+This project uses the following license: [MIT License](<link>).
 
 ### Challenges and Solutions 
 
