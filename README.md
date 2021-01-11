@@ -2,9 +2,7 @@
 
 ## Project Description
 
-Story Pitch Management System is an project design to invert the process of research in the humanities. Instead of aimlessly scouring 
-obscure archives in search of inspiration, just start with your ideas and let the scholarly conversation come 
-to you !
+Story Pitch Management System (SPMS) is designed to provide an organized pipeline for the submission, review, revision, and acceptance of user-submitted literary work. SPMS provides a platform for users to submit genre-specific pitches and drafts for stories. The system also exposes an editor dashboard which allows editors on varying permission levels to review, reject, accept, and request revision on submitted pitches. 
 
 ## Technologies Used
 
@@ -17,8 +15,10 @@ to you !
 
 List of features ready and TODOs for future development
 * Intuitive UI for uploading and review user submissions 
-* 
-* Awesome feature 3
+* Visual progress bar representing a pitch's stage submission pipeline
+* Decision history for each pitch
+* File uploads
+
 
 To-do list:
 * Rewrite frontend with framework to improve modular and readability. 
