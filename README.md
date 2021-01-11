@@ -44,10 +44,6 @@ care of the rest. After a short delay (note, however, that longer drafts => long
 you will recieve a set of recommended readings, each complete with a title, link, and 
 introductory blurb!
 
-## License
-
-This project uses the following license: [MIT License](<link>).
-
 ### Challenges and Solutions 
 
 #### Serialization and Deserialization of objects. 
@@ -102,3 +98,7 @@ I chose a multi-page front-end. After sign-in, I needed a way to save the user i
 I used the widely-supported Web Storage API along with JSON.stringify() and JSON.parse(). This was
 my first time needing a browser session, so it made the mechanics of session storage clearer to me. 
 Details: [Using_the_Web_Storage_API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) 
+
+## License
+
+This project uses the following license: [MIT License](https://opensource.org/licenses/MIT).
