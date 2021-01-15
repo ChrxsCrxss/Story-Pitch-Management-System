@@ -1,5 +1,10 @@
 package com.cross.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cross.beans.Draft;
 import com.cross.services.DraftService;
 import com.cross.services.DraftServiceImpl;
@@ -9,9 +14,17 @@ import com.google.gson.GsonBuilder;
 
 import io.javalin.http.Context;
 
+@RestController 
+@CrossOrigin(origins="http://localhost:4200", allowCredentials="true")
+@RequestMapping(path="/drafts")
 public class DraftController {
 	
-	private static DraftService draftServ = new DraftServiceImpl(); 
+	private static DraftService draftServ;
+	
+	@Autowired
+	public DraftController(DraftService d) {
+		draftServ = d; 
+	}
 	private static Gson gson; 
 	
 	public static void initGsonBuilder() {

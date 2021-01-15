@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
 import static java.util.Collections.shuffle; 
 
 import com.cross.beans.Form;
@@ -17,6 +20,7 @@ import com.cross.data.PitchDAO;
 import com.cross.data.PitchHibernate;
 import com.cross.data.UtilityDAO;
 
+@Service 
 public class PitchServiceImpl implements PitchService {
 	
 	private PitchDAO pitchDAO; 

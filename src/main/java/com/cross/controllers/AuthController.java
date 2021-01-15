@@ -1,5 +1,11 @@
 package com.cross.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cross.beans.Person;
 import com.cross.beans.Role;
 import com.cross.services.PersonService;
@@ -9,18 +15,21 @@ import com.google.gson.GsonBuilder;
 
 import io.javalin.http.Context;
 
+@RestController 
+@CrossOrigin(origins="http://localhost:4200", allowCredentials="true")
+@RequestMapping(path="/users")
 public class AuthController {
 	
 	private static PersonService personServ = new PersonServiceImpl();
 	private static Gson gson; 
 	
-	public static void initGsonBuilder() {
-		GsonBuilder builder = new GsonBuilder(); 
-	    builder.setPrettyPrinting(); 
-	    gson = builder.create(); 
+	@Autowired
+	public AuthController(PersonService p) {
+		personServ = p; 
 	}
 	
 	
+	@PostMapping
 	public static void login(Context ctx) {
 		
 		System.out.println( ctx.body() );
@@ -53,10 +62,6 @@ public class AuthController {
 		
 	};
 	
-	public static void logOut(Context ctx) {
-		 
-		ctx.req.getSession().invalidate();
-	}
 	
 	public static void registerUser(Context ctx){
 	    Person newPerson = gson.fromJson( ctx.body(), Person.class); 

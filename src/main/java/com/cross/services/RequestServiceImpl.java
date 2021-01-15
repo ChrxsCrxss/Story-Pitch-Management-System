@@ -2,10 +2,13 @@ package com.cross.services;
 
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.cross.beans.Request;
 import com.cross.data.RequestDAO;
 import com.cross.data.RequestHibernate;
 
+@Service
 public class RequestServiceImpl implements RequestService {
 
 	private RequestDAO requestDAO;

@@ -10,6 +10,11 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cross.beans.Form;
 import com.cross.beans.Genre;
 import com.cross.beans.Person;
@@ -22,9 +27,17 @@ import com.google.gson.GsonBuilder;
 
 import io.javalin.http.Context;
 
+@RestController 
+@CrossOrigin(origins="http://localhost:4200", allowCredentials="true")
+@RequestMapping(path="/ptiches")
 public class PitchController {
 	
-	private static PitchService pitchServ = new PitchServiceImpl(); 
+	private static PitchService pitchServ;
+	
+	@Autowired
+	public PitchController(PitchService p) {
+		pitchServ = p;
+	}
 	private static Gson gson; 
 	
 	public static void initGsonBuilder() {

@@ -3,10 +3,13 @@ package com.cross.services;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.cross.beans.Comment;
 import com.cross.data.CommentDAO;
 import com.cross.data.CommentHibernate;
 
+@Service 
 public class CommentServiceImpl implements CommentService {
 	
 	private CommentDAO commentDAO; 

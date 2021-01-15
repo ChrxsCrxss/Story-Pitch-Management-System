@@ -6,6 +6,11 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cross.beans.Person;
 import com.cross.beans.Pitch;
 import com.cross.beans.Request;
@@ -16,9 +21,17 @@ import com.google.gson.GsonBuilder;
 
 import io.javalin.http.Context;
 
+@RestController 
+@CrossOrigin(origins="http://localhost:4200", allowCredentials="true")
+@RequestMapping(path="/requests")
 public class RequestController {
 	
-	private static RequestService requestServ = new RequestServiceImpl();
+	private static RequestService requestServ;
+	
+	@Autowired
+	public RequestController(RequestService r) {
+		requestServ = r; 
+	}
 	private static Gson gson; 
 	
 	public static void initGsonBuilder() {

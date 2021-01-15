@@ -1,9 +1,12 @@
 package com.cross.services;
 
+import org.springframework.stereotype.Service;
+
 import com.cross.beans.Draft;
 import com.cross.data.DraftDAO;
 import com.cross.data.DraftHibernate;
 
+@Service
 public class DraftServiceImpl implements DraftService {
 	
 	private DraftDAO draftDAO;

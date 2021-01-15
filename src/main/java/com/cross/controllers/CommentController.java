@@ -1,5 +1,9 @@
 package com.cross.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cross.beans.Comment;
 import com.cross.beans.Pitch;
 import com.cross.services.CommentService;
@@ -9,10 +13,16 @@ import com.google.gson.GsonBuilder;
 
 import io.javalin.http.Context;
 
-
+@RestController 
+@CrossOrigin(origins="http://localhost:4200", allowCredentials="true")
+@RequestMapping(path="/comments")
 public class CommentController {
 	
-	private static CommentService commentServ = new CommentServiceImpl(); 
+	private static CommentService commentServ; 
+	
+	public CommentController(CommentService c) {
+		commentServ = c; 
+	}
 	private static Gson gson; 
 	
 	public static void initGsonBuilder() {

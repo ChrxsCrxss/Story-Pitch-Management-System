@@ -2,11 +2,14 @@ package com.cross.services;
 
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.cross.beans.Decision;
 import com.cross.data.DecisionDAO;
 import com.cross.data.DecisionHibernate;
 import com.cross.exceptions.InvalidGeneralEditorException;
 
+@Service 
 public class DecisionServiceImpl implements DecisionService {
 	
 	private DecisionDAO decisionDAO; 

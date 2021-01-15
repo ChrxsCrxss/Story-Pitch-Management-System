@@ -2,10 +2,13 @@ package com.cross.services;
 
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.cross.beans.Person;
 import com.cross.data.PersonDAO;
 import com.cross.data.PersonHibernate;
 
+@Service
 public class PersonServiceImpl implements PersonService {
 	private PersonDAO personDao;
 	
