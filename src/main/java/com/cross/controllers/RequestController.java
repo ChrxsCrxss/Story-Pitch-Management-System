@@ -7,7 +7,13 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,13 +38,7 @@ public class RequestController {
 	public RequestController(RequestService r) {
 		requestServ = r; 
 	}
-	private static Gson gson; 
-	
-	public static void initGsonBuilder() {
-		GsonBuilder builder = new GsonBuilder(); 
-	    builder.setPrettyPrinting(); 
-	    gson = builder.create(); 
-	}
+
 	
 	public static void getRequests(Context ctx) {}
 	public static void deleteRequest(Context ctx) {}
@@ -46,35 +46,25 @@ public class RequestController {
 	public static void getAllRequests(Context ctx) {}
 	
     
-	public static void addRequest(Context ctx) {
-	    Request request;
-	    request = gson.fromJson( ctx.body(), Request.class);
-	    System.out.println(request.getId());
-	    System.out.println(request.getStatus().getName());
-	    ctx.status(200); 
-	    
+	
+	@PostMapping
+	public ResponseEntity<Request> addRequest(@RequestBody Request r) {
 		try {
-		    Request given;
-		    given = gson.fromJson( ctx.body(), Request.class);
-			Request returned = requestServ.addRequest(given);
-		    ctx.json( gson.toJson(returned) );
-			ctx.status(200);
-			
+			return ResponseEntity.ok( requestServ.addRequest(r) );
 		} catch (Exception e) {
 			e.printStackTrace();
-			ctx.status(500);
+			return ResponseEntity.status(500).build(); 
 		}
 	}
 	
-    
-	public static void updateRequest(Context ctx) {
-		
-	    Request request;
-	    request = gson.fromJson( ctx.body(), Request.class);
-	    System.out.println(request.getId());
-	    System.out.println(request.getStatus().getName());
-	    ctx.status(200); 
-		
+    @PutMapping
+	public ResponseEntity<Request> updateRequest(@RequestBody Request r) {
+		try {
+			return ResponseEntity.status(200).build(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(500).build(); 
+		}
 		
 	}
     
@@ -87,18 +77,44 @@ public class RequestController {
 		
 	}
 	
-	public static void getRequestsByPersonId(Context ctx) {		
+	@GetMapping(path="/personid/{id}")
+	public ResponseEntity<Object[]> getRequestsByPersonId(@PathVariable Integer id) {		
 		try {
-			Integer id = Integer.parseInt( ctx.pathParam("id") ); 
-			System.out.println(id);
 			Object[] requests = requestServ.getRequestsByParticipantId(id).toArray();
-		    ctx.json( gson.toJson(requests) );
-			ctx.status(200);
-			
+			return ResponseEntity.ok(requests); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			ctx.status(500);
+			return ResponseEntity.status(500).build(); 
 		}
 	}
 
 }
+
+
+
+/*
+ * 
+ * 			// all requests to /cats go to this handler
+			path ("api/requests", () -> {
+				get(RequestController::getRequests); // get open requests is the default
+				post(RequestController::addRequest); // add a request
+				put(RequestController::updateRequest); // update a request
+				path(":id", () -> {
+					get(RequestController::getRequestById); // get a request by id
+					delete(RequestController::deleteRequest); // delete a request by id
+				});
+				path ("personid/:id", () -> {
+					get(RequestController::getRequestsByPersonId); // all open requests associated with a person
+
+				});
+				path ("all", () -> {
+					get(RequestController::getAllRequests); // get all requests
+				});
+				path ("close/:id", () -> {
+					put(RequestController::closeRequest); // close a request 
+				});
+			});
+ * 
+ * 
+ * 
+ */

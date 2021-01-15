@@ -1,8 +1,10 @@
 package com.cross.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,50 +31,33 @@ public class AuthController {
 	}
 	
 	
-	@PostMapping
-	public static void login(Context ctx) {
+	@PostMapping(path="/login")
+	public ResponseEntity<Person> login(@RequestBody Person p) {
 		
-		System.out.println( ctx.body() );
-	    Person deserializedPerson, queriedPerson;  
+
+	    Person queriedPerson = personServ.getPersonByUsername(p.getUsername());
 	    
-	    deserializedPerson = gson.fromJson( ctx.body(), Person.class);
-	    queriedPerson = personServ.getPersonByUsername(deserializedPerson.getUsername());
-	    
-	    if ( queriedPerson == null ) {
-	    	ctx.result("No user with that password found"); 
-	    	ctx.status(404);
+	    if ( queriedPerson != null ) {
+	    	if (queriedPerson.getPassword().equals(p.getPassword()) ) {
+		    	return ResponseEntity.ok(queriedPerson);
+	    	}
+	    	return ResponseEntity.badRequest().build();
 	    }
-	    
-	    if ( queriedPerson.getPassword().equals(deserializedPerson.getPassword() )) {
-	    	ctx.result("No combination of that username and password found");
-	    	ctx.status(404);
-	    }
-	    
-	    // TODO : be sure to scrub the password before sending the Person object back to the client
-	    
-	    queriedPerson.setPassword("******");
-	    
-	    try {
-		    ctx.json( gson.toJson(queriedPerson) );
-			ctx.status(200);
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	ctx.status(500);
-	    }
+		return ResponseEntity.notFound().build(); 
+				
 		
+
 	};
 	
-	
-	public static void registerUser(Context ctx){
-	    Person newPerson = gson.fromJson( ctx.body(), Person.class); 
+	@PostMapping(path="/sigup")
+	public ResponseEntity<Person> signup(@RequestBody Person p){
 		try {
-//			personServ.addPerson(newPerson);
+			return ResponseEntity.ok( personServ.addPerson(p) );
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			ctx.status(409);
+			return ResponseEntity.status(500).build(); 
 		}
-		ctx.status(200);
 	}
 
 }

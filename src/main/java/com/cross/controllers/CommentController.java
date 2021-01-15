@@ -1,6 +1,12 @@
 package com.cross.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,43 +26,31 @@ public class CommentController {
 	
 	private static CommentService commentServ; 
 	
+	@Autowired 
 	public CommentController(CommentService c) {
 		commentServ = c; 
 	}
-	private static Gson gson; 
 	
-	public static void initGsonBuilder() {
-		GsonBuilder builder = new GsonBuilder(); 
-	    builder.setPrettyPrinting(); 
-	    gson = builder.create(); 
-	}
-	
-	public static void getByRequestId(Context ctx) {
+	@GetMapping(path="requestid/{id}")
+	public ResponseEntity<Object[]> getByRequestId(@PathVariable Integer id) {
 		try {
-			Integer id = Integer.parseInt( ctx.pathParam("id") ); 
 			Object[] pitches = commentServ.getCommentsByRequestId(id).toArray();
-		    ctx.json( gson.toJson(pitches) );
-			ctx.status(200);
-			
+			return ResponseEntity.ok(pitches); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			ctx.status(500);
+			return ResponseEntity.status(500).build(); 
 		}
 	}
 	
-	public static void addComment(Context ctx) {
-		System.out.println( ctx.body() );
+	@PostMapping
+	public ResponseEntity<Comment> addComment(@RequestBody Comment c) {
 	    try {
-		    Comment given, returned;     
-		    given = gson.fromJson( ctx.body(), Comment.class);
-		    returned = commentServ.add(given);
-		    ctx.json( gson.toJson(returned));
-			ctx.status(200);
+		    Comment returnedComment = commentServ.add(c);
+		    return ResponseEntity.ok(returnedComment);
 	    } catch (Exception e) {
 	    	e.printStackTrace();
-	    	ctx.status(500);
+	    	return ResponseEntity.status(500).build(); 
 	    }
 	}
-	
-	
+		
 }

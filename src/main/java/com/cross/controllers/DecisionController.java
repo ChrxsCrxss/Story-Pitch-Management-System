@@ -1,6 +1,12 @@
 package com.cross.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,42 +25,27 @@ public class DecisionController {
 	
 	private static DecisionService decisionServ;
 	
+	@Autowired
 	public DecisionController(DecisionService d) {
 		decisionServ = d; 
 	}
-	private static Gson gson; 
-	
-	public static void initGsonBuilder() {
-		GsonBuilder builder = new GsonBuilder(); 
-	    builder.setPrettyPrinting(); 
-	    gson = builder.create(); 
-	}
-	
-	public static void addDecision(Context ctx) {
-		System.out.println( ctx.body() );
-	    
+
+	@PostMapping
+	public ResponseEntity<Decision> addDecision(@RequestBody Decision d) {
 	    try {
-		    Decision given;	    
-		    given = gson.fromJson( ctx.body(), Decision.class);
-		    Decision returned = decisionServ.add(given);
-		    ctx.json( gson.toJson(returned) );
-			ctx.status(200);
+		    return ResponseEntity.ok( decisionServ.add(d) );
 	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	ctx.status(500);
+	    	return ResponseEntity.status(500).build(); 
 	    }
 	}
 	
-	public static void getDecisionsByPitchId(Context ctx) {
+	@GetMapping(path="pitchid/{id}")
+	public ResponseEntity<Object[]> getDecisionsByPitchId(@PathVariable Integer id) {
 	    try {
-			Integer id = Integer.parseInt( ctx.pathParam("id") ); 
-			System.out.println(id);
 			Object[] decisions = decisionServ.getDecisionsByPitchId(id).toArray();
-		    ctx.json( gson.toJson(decisions) );
-			ctx.status(200);
+			return ResponseEntity.ok(decisions); 
 	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	ctx.status(500);
+	    	return ResponseEntity.status(500).build();
 	    }
 	}
 }

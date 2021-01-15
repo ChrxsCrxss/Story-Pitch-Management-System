@@ -1,17 +1,19 @@
 package com.cross.controllers;
 
-import static io.javalin.apibuilder.ApiBuilder.delete;
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.post;
-import static io.javalin.apibuilder.ApiBuilder.put;
 
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,102 +40,85 @@ public class PitchController {
 	public PitchController(PitchService p) {
 		pitchServ = p;
 	}
-	private static Gson gson; 
-	
-	public static void initGsonBuilder() {
-		GsonBuilder builder = new GsonBuilder(); 
-	    builder.setPrettyPrinting(); 
-	    gson = builder.create(); 
-	}
 	
 	public static void getPendingPitches(Context ctx) { /* TODO : implement */ }
 	public static void getPitchById(Context ctx) { /* TODO : implement */ }
 	public static void getAllPitches(Context ctx) { /* TODO : implement */ }
 
 	
-	
-	public static void updatePitch(Context ctx) {
+	@PutMapping(path="/{id}")
+	public ResponseEntity<Object> updatePitch(@RequestBody Pitch p ) {
 		try {
-		    Pitch updatedPitch;	    
-		    updatedPitch = gson.fromJson( ctx.body(), Pitch.class);
-		    
-		    Boolean didUpdate = pitchServ.updatePitch(updatedPitch); 
+		    Boolean didUpdate = pitchServ.updatePitch(p); 
 		    System.out.println(didUpdate);
 		    if (didUpdate) {
-		    	ctx.status(200);
+		    	return ResponseEntity.ok().build(); 
 		    } else {
-		    	ctx.status(500);
+		    	return ResponseEntity.status(500).build(); 
 		    }
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			ctx.status(500);
+			return ResponseEntity.status(500).build(); 
 		}
 	}
 	
-	
-	public static void getPitchByGenre(Context ctx) {  
+	@GetMapping(path="/genre/{genre}")
+	public ResponseEntity<Object[]> getPitchByGenre(@PathVariable String genre) {  
 		
 		try {
-			String genre = ctx.pathParam("genre");
-			Object[] pitches = pitchServ.getPitchesByGenre(genre).toArray();
-		    ctx.json( gson.toJson(pitches) );
-			ctx.status(200);
+			Object[] pitches = pitchServ.getPitchesByGenre(genre).toArray(); 
+			return ResponseEntity.ok(pitches);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			ctx.status(500);
+			return ResponseEntity.status(500).build(); 
 		}
 	}
 	
-	public static void getPitchByGeneralEditorId(Context ctx) {  
+	@GetMapping(path="/generaleditor/{id}")
+	public ResponseEntity<Object[]> getPitchByGeneralEditorId(@PathVariable Integer id) {  
 		
 		try {
-			Integer id = Integer.parseInt( ctx.pathParam("id") ); 
 			Object[] pitches = pitchServ.getPitchesByGeneralEditorId(id).toArray();
-		    ctx.json( gson.toJson(pitches) );
-			ctx.status(200);
+			return ResponseEntity.ok(pitches);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			ctx.status(500);
+			return ResponseEntity.status(500).build(); 
 		}
 	}
 	
-	public static void deletePitch(Context ctx) { 
-		
-		Integer id = Integer.parseInt( ctx.pathParam("id") ); 
-		System.out.println(id); 
-		ctx.status(200); 
+	@DeleteMapping(path="/{id}")
+	public ResponseEntity<Boolean> deletePitch(@PathVariable Integer id) { 
+		try {
+			pitchServ.deletePitch( pitchServ.getPitchById(id) );
+			return ResponseEntity.ok(null); 
+		} catch (Exception e) {
+			return ResponseEntity.status(500).build();
+		}
 	}
 	
-	public static void addPitch(Context ctx) {
-		
-		System.out.println( ctx.body() );
-	    
+	@PostMapping
+	public ResponseEntity<Pitch> addPitch(@RequestBody Pitch p) {
 	    try {
-		    Pitch deserializedPitch;	    
-		    deserializedPitch = gson.fromJson( ctx.body(), Pitch.class);
-		    Pitch outPitch = pitchServ.addPitch(deserializedPitch);
-		    ctx.json( gson.toJson(outPitch) );
-			ctx.status(200);
+	    	return ResponseEntity.ok( pitchServ.addPitch(p) );
 	    } catch (Exception e) {
 	    	e.printStackTrace();
-	    	ctx.status(500);
+	    	return ResponseEntity.status(500).build(); 
 	    }
 	
 	}
 	
-	public static void getPitchByAuthorId(Context ctx) { 		
+	@GetMapping(path="/authorid/{id}")
+	public ResponseEntity<Object[]>  getPitchByAuthorId(@PathVariable Integer id) { 		
 	    try {
-			Integer id = Integer.parseInt( ctx.pathParam("id") ); 
-			System.out.println(id);
 			Object[] pitches = pitchServ.getPitchesByAuthorId(id).toArray();
-		    ctx.json( gson.toJson(pitches) );
-			ctx.status(200);
+			return ResponseEntity.ok(pitches);
 	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    	ctx.status(500);
+			e.printStackTrace();
+			return ResponseEntity.status(500).build(); 
 	    }
 	}
 }
+
